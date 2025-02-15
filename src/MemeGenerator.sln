@@ -1,0 +1,60 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35728.132
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MemeGenerator.Web", "MemeGenerator.Web\MemeGenerator.Web\MemeGenerator.Web.csproj", "{42FA5B15-7C59-4ACB-91EF-5DA442B80F3B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MemeGenerator.Web.Client", "MemeGenerator.Web\MemeGenerator.Web.Client\MemeGenerator.Web.Client.csproj", "{B909B6D5-D5F1-4EF0-ABF1-71BFD4573290}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MemeGenerator.Models", "MemeGenerator.Models\MemeGenerator.Models.csproj", "{E8334A2C-DA78-4BAA-B828-D572536D5DA7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MemeGenerator.Core", "MemeGenerator.Core\MemeGenerator.Core.csproj", "{D380A2B5-2449-4927-917D-9DDECDE4DDD7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{664E0C72-D17F-48FC-BA23-65F0933007CD}"
+	ProjectSection(SolutionItems) = preProject
+		..\.gitignore = ..\.gitignore
+		..\Dockerfile = ..\Dockerfile
+		..\LICENSE = ..\LICENSE
+		..\README.md = ..\README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Server", "Server", "{2397D5BF-46B2-4327-8420-B11C835C3EF7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MemeGenerator.Services", "MemeGenerator.Services\MemeGenerator.Services.csproj", "{3F0C08FA-CC04-4115-854F-321570930CD8}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{42FA5B15-7C59-4ACB-91EF-5DA442B80F3B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{42FA5B15-7C59-4ACB-91EF-5DA442B80F3B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{42FA5B15-7C59-4ACB-91EF-5DA442B80F3B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{42FA5B15-7C59-4ACB-91EF-5DA442B80F3B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B909B6D5-D5F1-4EF0-ABF1-71BFD4573290}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B909B6D5-D5F1-4EF0-ABF1-71BFD4573290}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B909B6D5-D5F1-4EF0-ABF1-71BFD4573290}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B909B6D5-D5F1-4EF0-ABF1-71BFD4573290}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E8334A2C-DA78-4BAA-B828-D572536D5DA7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E8334A2C-DA78-4BAA-B828-D572536D5DA7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E8334A2C-DA78-4BAA-B828-D572536D5DA7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E8334A2C-DA78-4BAA-B828-D572536D5DA7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D380A2B5-2449-4927-917D-9DDECDE4DDD7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D380A2B5-2449-4927-917D-9DDECDE4DDD7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D380A2B5-2449-4927-917D-9DDECDE4DDD7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D380A2B5-2449-4927-917D-9DDECDE4DDD7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3F0C08FA-CC04-4115-854F-321570930CD8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3F0C08FA-CC04-4115-854F-321570930CD8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3F0C08FA-CC04-4115-854F-321570930CD8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3F0C08FA-CC04-4115-854F-321570930CD8}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{D380A2B5-2449-4927-917D-9DDECDE4DDD7} = {2397D5BF-46B2-4327-8420-B11C835C3EF7}
+		{3F0C08FA-CC04-4115-854F-321570930CD8} = {2397D5BF-46B2-4327-8420-B11C835C3EF7}
+	EndGlobalSection
+EndGlobal

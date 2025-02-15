@@ -1,0 +1,127 @@
+﻿@page "/templates/{id}"
+@rendermode InteractiveAuto
+@inject IApi _api
+@inject NavigationManager _navi
+
+<PageTitle>Meme Generator</PageTitle>
+
+<div class="container mt-5">
+    <h3>Meme Generator - @(Results?.Data?.Name ?? "")</h3>
+    @if (Loading)
+    {
+        <div class="row">
+            <div class="col text-center d-flex justify-content-center">
+                <div class="d-flex">
+                    <Icon Value="sync" Spin="true" Flip="true" Speed="1.5s" />
+                    <span class="mt-auto mb-auto">
+                        Loading...
+                    </span>
+                </div>
+            </div>
+        </div>
+    }
+    else if (Error is not null)
+    {
+        <p><em>Error Occurred: </em> @Error</p>
+        <ul>
+            @foreach (var error in Errors)
+            {
+                <li>@error</li>
+            }
+        </ul>
+    }
+    else if (Results?.Data is not null)
+    {
+        <div class="row">
+            <div class="col-12">
+                <p>Description: @Results.Data.Description</p>
+            </div>
+            @foreach (var requirement in Results.Data.Inputs)
+            {
+                <div class="col-4 col-md-6 col-sm-12">
+                    <div class="mb-3">
+                        <label for="@requirement.Name" class="form-label">@requirement.Name</label>
+                        <input id="@requirement.Name" class="form-control" @bind-value="@requirement.Value" @bind-value:event="oninput" placeholder="@requirement.Description" />
+                    </div>
+                </div>
+            }
+            <div class="col-12 d-flex justify-content-end align-items-start" style="padding-top: 32px">
+                <button type="button" class="btn btn-primary mb-2" @onclick="Generate">
+                    Generate
+                </button>
+            </div>
+        </div>
+    }
+</div>
+
+@code {
+    private string? _error;
+
+    [Parameter]
+    public string? Id { get; set; }
+
+    public bool Loading { get; set; } = false;
+
+    public Boxed<MemeTemplate>? Results { get; set; }
+    public Boxed<MemeResult>? MemeResults { get; set; }
+
+    public string? Error => _error 
+        ?? ((Results?.Errors is not null && Results.Errors.Length > 0) ? "An error occurred while fetching template." : null)
+        ?? ((MemeResults?.Errors is not null && MemeResults.Errors.Length > 0) ? "An error occurred while generating meme" : null);
+
+    public string[] Errors => Results?.Errors ?? MemeResults?.Errors ?? [];
+
+    public async Task Generate()
+    {
+        if (Results?.Data is null || Results.Data.Id is null) return;
+
+        Loading = true;
+        try
+        {
+            var inputs = new Dictionary<string, string?>();
+            foreach (var requirement in Results.Data.Inputs)
+            {
+                inputs.Add(requirement.Name, requirement.Value);
+            }
+            var id = Results.Data.Id.Value;
+            var request = new MemeRequest(id, inputs);
+            MemeResults = await _api.Memes.Post(request);
+            var memeId = MemeResults?.Data?.Id;
+            if (memeId.HasValue)
+                _navi.NavigateTo($"/memes/{memeId}");
+        }
+        catch (Exception ex)
+        {
+            _error = ex.Message;
+        }
+        finally
+        {
+            Loading = false;
+        }
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        await base.OnParametersSetAsync();
+
+        if (string.IsNullOrEmpty(Id) || !Guid.TryParse(Id, out var guid))
+        {
+            _error = "Template ID Invalid.";
+            return;
+        }
+
+        try 
+        {
+            Loading = true;
+            Results = await _api.Templates.Fetch(guid);
+        }
+        catch (Exception ex)
+        {
+            _error = ex.Message;
+        }
+        finally
+        {
+            Loading = false;
+        }
+    }
+}

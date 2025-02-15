@@ -1,0 +1,49 @@
+﻿<div class="btn-group" role="group" aria-label="Pager">
+    <button type="button" class="btn btn-outline-primary" disabled>@Start - @End of @Total</button>
+    <button type="button" class="btn btn-outline-primary btn-icon" disabled="@(Page == 1 || Total == 0)" @onclick="() => GoNext(1)">
+        <Icon Unsize Value="keyboard_double_arrow_left" />
+    </button>
+    <button type="button" class="btn btn-outline-primary btn-icon" disabled="@(Page <= 1 || Total == 0)" @onclick="() => GoNext(Page - 1)">
+        <Icon Unsize Value="chevron_left" />
+    </button>
+    @foreach (var opt in Options)
+    {
+        <button type="button" class="btn @(opt == Page ? "btn-primary" : "btn-outline-primary")" @onclick="() => GoNext(opt)">
+            @opt
+        </button>
+    }
+    <button type="button" class="btn btn-icon btn-outline-primary" disabled="@(Page >= Pages || Total == 0)" @onclick="() => GoNext(Page + 1)">
+        <Icon Unsize Value="chevron_right" />
+    </button>
+    <button type="button" class="btn btn-icon btn-outline-primary" disabled="@(Page == Pages || Total == 0)" @onclick="() => GoNext(Pages)">
+        <Icon Unsize Value="keyboard_double_arrow_right" />
+    </button>
+</div>
+
+@code {
+    [Parameter] public int PagedButtons { get; set; } = 2;
+
+    [Parameter] public required int Page { get; set; }
+
+    [Parameter] public required int Pages { get; set; }
+
+    [Parameter] public required int Size { get; set; }
+
+    [Parameter] public required int Total { get; set; }
+
+    [Parameter] public EventCallback<int> Clicked { get; set; }
+
+    public int Start => Math.Max((Page - 1) * Size, 1);
+
+    public int End => Math.Min(Page * Size, Total);
+
+    public int[] Options => new int[Pages]
+        .Select((_, index) => index + 1)
+        .Where(t => t >= Page - PagedButtons && t <= Page + PagedButtons)
+        .ToArray();
+
+    public Task GoNext(int page)
+    {
+        return Clicked.InvokeAsync(page);
+    }
+}

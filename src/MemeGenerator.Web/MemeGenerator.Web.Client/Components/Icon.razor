@@ -1,0 +1,55 @@
+﻿<span class="material-symbols-outlined @Classes" title="@Title" style="@Styles">
+    @Value
+</span>
+
+@code {
+    [Parameter] public string Value { get; set; } = "home";
+
+    [Parameter] public bool Fill { get; set; } = false;
+
+    [Parameter] public bool Spin { get; set; } = false;
+
+    [Parameter] public bool Flip { get; set; } = false;
+
+    [Parameter] public bool Unsize { get; set; } = false;
+
+    [Parameter] public int Rotate { get; set; } = 0;
+
+    [Parameter] public string Speed { get; set; } = "";
+
+    [Parameter] public string Title { get; set; } = "";
+
+    [Parameter] public string Size { get; set; } = "";
+
+    [Parameter] public string Class { get; set; } = "";
+
+    public string Classes
+    {
+        get
+        {
+            var output = new List<string> { Class };
+            if (Fill) output.Add("fill-icon");
+            if (Spin) output.Add("spin");
+            if (Flip) output.Add("flip");
+            if (Unsize) output.Add("unsize");
+            return string.Join(" ", output);
+        }
+    }
+
+    public string Styles
+    {
+        get
+        {
+            var dic = new Dictionary<string, string>
+            {
+                ["font-size"] = Size,
+                ["transform"] = $"rotate({Rotate}deg) scaleX({(Flip ? -1 : 1)})",
+                ["animation-duration"] = Speed
+            };
+
+            return string.Join("; ", dic
+                .Where(t => !string.IsNullOrWhiteSpace(t.Value))
+                .Select(t => $"{t.Key}: {t.Value}"));
+        }
+    }
+}

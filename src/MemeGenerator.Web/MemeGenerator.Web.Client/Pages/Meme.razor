@@ -1,0 +1,131 @@
+﻿@page "/memes/{id}"
+@rendermode InteractiveAuto
+@inject IApi _api
+
+<PageTitle>Meme Results</PageTitle>
+
+<div class="container mt-5">
+    @if (Loading)
+    {
+        <div class="row">
+            <div class="col text-center d-flex justify-content-center">
+                <div class="d-flex">
+                    <Icon Value="sync" Spin="true" Flip="true" Speed="1.5s" />
+                    <span class="mt-auto mb-auto">
+                        Loading...
+                    </span>
+                </div>
+            </div>
+        </div>
+    }
+    else if (Error is not null)
+    {
+        <p><em>Error Occurred: </em> @Error</p>
+        <ul>
+            @foreach (var error in Errors)
+            {
+                <li>@error</li>
+            }
+        </ul>
+    }
+    else if (Results?.Data is null)
+    {
+        <p><em>Error: </em> Results came back null</p>
+    }
+    else if (Results.Data.State == StateType.Failed)
+    {
+        <p><em>Error: </em> @(Results.Data.Error ?? "An error occurred")</p>
+    }
+    else if (Results.Data.State == StateType.Queued)
+    {
+        <p><em>Queued: </em> Your meme is #@Results.Data.Position in queue</p>
+        <p>You scheduled your meme at: @Results.Data.TimeQueued.ToString("yyyy-MM-dd HH:mm")</p>
+    }
+    else if (Results.Data.State == StateType.Processing)
+    {
+        <p><em>Processing: </em> Your meme is being generated...</p>
+        <p>You scheduled your meme at: @Results.Data.TimeQueued.ToString("yyyy-MM-dd HH:mm")</p>
+        <p>Your meme started generating at: @Results.Data.TimeProcessStart?.ToString("yyyy-MM-dd HH:mm")</p>
+    }
+    else
+    {
+        <div class="card mb-3">
+            <div class="card-header">
+                <h3>Here is your meme</h3>
+            </div>
+            <div class="card-body">
+                <a href="/api/media/memes/@Results.Data.Id" target="_blank">
+                    <img src="/api/media/memes/@Results.Data.Id" class="img-fluid" alt="your meme" />
+                </a>
+            </div>
+            <div class="card-footer">
+                Queued: @(Results.Data.TimeQueued.ToString("yyyy-MM-dd HH:mm")).
+                Started: @(Results.Data.TimeProcessStart?.ToString("yyyy-MM-dd HH:mm")).
+                Finished: @(Results.Data.TimeProcessFinished?.ToString("yyyy-MM-dd HH:mm")).
+                Size: @($"{Results.Data.Width}px / {Results.Data.Height}px")
+            </div>
+        </div>
+    }
+</div>
+
+@code {
+    private string? _error;
+    private System.Timers.Timer? _timer;
+
+    [Parameter]
+    public string? Id { get; set; }
+
+    public bool Loading { get; set; } = false;
+    public Boxed<MemeResult>? Results { get; set; }
+    public string? Error => _error
+        ?? ((Results?.Errors is not null && Results.Errors.Length > 0) ? "An error occurred while fetching template." : null);
+    public string[] Errors => Results?.Errors ?? [];
+
+    public async Task FetchData()
+    {
+        if (string.IsNullOrEmpty(Id) || !Guid.TryParse(Id, out var guid))
+        {
+            _error = "Template ID Invalid.";
+            return;
+        }
+
+        try
+        {
+            Results = await _api.Memes.Get(guid);
+
+            var state = Results?.Data?.State ?? StateType.Failed;
+            if (_timer is null && (state == StateType.Queued || state == StateType.Processing))
+            {
+                _timer = new();
+                _timer.Interval = 5000;
+                _timer.Elapsed += async (sender, e) =>
+                {
+                    await FetchData();
+                    await InvokeAsync(StateHasChanged);
+                };
+                _timer.Enabled = true;
+            }
+            else if (_timer is not null && state != StateType.Queued && state != StateType.Processing)
+            {
+                _timer.Enabled = false;
+                _timer.Dispose();
+                _timer = null;
+            }
+        }
+        catch (Exception ex)
+        {
+            _error = ex.Message;
+        }
+        finally
+        {
+            Loading = false;
+        }
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        await base.OnParametersSetAsync();
+        Loading = true;
+        await FetchData();
+    }
+}
