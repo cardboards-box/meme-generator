@@ -1,5 +1,5 @@
 ﻿@page "/memes/{id}"
-@rendermode InteractiveWebAssembly
+@rendermode InteractiveServer
 @inject IApi _api
 
 <PageTitle>Meme Results</PageTitle>
@@ -122,9 +122,8 @@
         }
     }
 
-    protected override async Task OnParametersSetAsync()
+    protected override async Task OnInitializedAsync()
     {
-        await base.OnParametersSetAsync();
         Loading = true;
         await FetchData();
     }

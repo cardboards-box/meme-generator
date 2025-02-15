@@ -1,5 +1,5 @@
 ﻿@page "/templates/{id}"
-@rendermode InteractiveWebAssembly
+@rendermode InteractiveServer
 @inject IApi _api
 @inject NavigationManager _navi
 
@@ -100,10 +100,8 @@
         }
     }
 
-    protected override async Task OnParametersSetAsync()
+    protected override async Task OnInitializedAsync()
     {
-        await base.OnParametersSetAsync();
-
         if (string.IsNullOrEmpty(Id) || !Guid.TryParse(Id, out var guid))
         {
             _error = "Template ID Invalid.";

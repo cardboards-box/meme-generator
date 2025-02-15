@@ -1,5 +1,5 @@
 ﻿@page "/templates"
-@rendermode InteractiveWebAssembly
+@rendermode InteractiveServer
 @inject IApi _api
 
 <PageTitle>Templates</PageTitle>
@@ -35,18 +35,20 @@ else
 {
     <div class="container mt-5">
         <div class="row">
-            @foreach (var template in AllTemplates)
+            @for(var i = 0; i < AllTemplates.Length; i++)
             {
+                var current = AllTemplates[i];
                 <div class="col-4 col-md-6 col-sm-12">
                     <div class="card mb-3">
                         <div class="card-header">
-                            @template.Name (@template.Id)
+                            @current.Name (@current.Id)
                         </div>
                         <div class="card-body">
-                            <img src="/api/media/templates/@template.Id" class="img-fluid" alt="@template.Name" />
+                            <p>@current.Description</p>
+                            <img src="/api/media/templates/@current.Id" class="img-fluid" alt="@current.Name" />
                         </div>
                         <div class="card-footer">
-                            <a class="btn btn-primary" href="/templates/@template.Id">Generate Meme</a>
+                            <a class="btn btn-primary" href="/templates/@current.Id">Generate Meme</a>
                         </div>
                     </div>
                 </div>
@@ -65,18 +67,15 @@ else
 
     public string? Error => _error ?? ((Results?.Errors is not null && Results.Errors.Length > 0) ? "An error occurred while fetching templates." : null);
 
-    public MemeTemplate[] AllTemplates => Results?.Data ?? [];
+    public MemeTemplate[] AllTemplates { get; set; } = [];
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
+    protected override async Task OnInitializedAsync()
     {
-        await base.OnAfterRenderAsync(firstRender);
-
-        if (!firstRender) return;
-
         try
         {
             Loading = true;
             Results = await _api.Templates.Get();
+            AllTemplates = Results?.Data ?? [];
         }
         catch (Exception ex)
         {
