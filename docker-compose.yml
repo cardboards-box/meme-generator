@@ -1,0 +1,13 @@
+services:
+  meme-generator:
+    image: ghcr.io/cardboards-box/meme-generator/meme-generator-web:latest
+    restart: always
+    volumes:
+      - ./meme-generation:/app/local-files
+    environment:
+      - Memes:TemplatesDir=./local-files/templates
+      - Memes:TemplatesFilter=*.ib
+      - Memes:OutputDir=./local-files/output
+      - ImageBox:Requests:Cache=./local-files/cache
+    ports:
+      - 5000:8080
