@@ -1,0 +1,74 @@
+<!-- CONFIG:
+{
+    "name": "Faceit - Burning Paper",
+    "description": "Ignorance is bliss",
+    "inputs": [
+        {
+            "name": "Paper Text", 
+            "type": "text", 
+            "default": "Your Side Hosts",
+            "description": "What to burn"
+        },
+        {
+            "name": "Ignoranus",
+            "type": "text",
+            "default": "Left Side Captain",
+            "description": "The person being ignorant"
+        }
+    ]
+}
+-->
+
+<template width="560px" height="680px">
+    <image width="100%" height="100%" x="0" y="0" src="./image.jpg" />
+    <text {paper} font-family="font" color="black" />
+    <foreach let="ignoranus" :each="ignoranuses">
+        <text {ignoranus} font-family="font" auto-font-size color="black" />
+    </foreach>
+</template>
+
+<cache>
+    <font-family name="font" src="https://fonts.cdnfonts.com/s/21809/ScribblerBd.woff" />
+</cache>
+
+<script setup>
+import { Drawing, Context, logger } from 'system';
+
+export default (ctx) => {
+    const { unit, bounds } = new Drawing(ctx);
+    const { get } = new Context(ctx);
+
+    const common = {
+        'font-size': unit('35px'),
+        'align-vertical': 'center',
+        'align-horizontal': 'center',
+        'align-text': 'center',
+        'origin-type': 'center',
+    }
+
+    const boundings = [
+        bounds('300px', '5px', '550px', '65px'),
+        bounds('80px', '360px', '270px', '410px'),
+        bounds('385px', '355px', '555px', '425px')
+    ];
+
+    const ignoranuses = [];
+    const text = get('Ignoranus') || 'Left Side Captain';
+    for(const bounds of boundings) {
+        ignoranuses.push({
+            ...common,
+            value: text,
+            ...bounds
+        });
+    }
+
+    return { 
+        paper:  {
+            ...common,
+            value: get('Paper Text') || 'Your Side Hosts',
+            ...bounds('45px', '60px', '220px', '290px'),
+        },
+        ignoranuses 
+    };
+}
+</script>

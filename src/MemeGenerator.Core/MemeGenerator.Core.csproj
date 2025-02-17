@@ -13,7 +13,7 @@
 	<ItemGroup>
 		<PackageReference Include="CardboardBox.Extensions.Scripting" Version="2.0.1" />
 		<PackageReference Include="CardboardBox.Setup" Version="2.0.0" />
-		<PackageReference Include="ImageBox" Version="1.0.8" />
+		<PackageReference Include="ImageBox" Version="1.0.9" />
 		<PackageReference Include="System.Formats.Asn1" Version="8.0.2" />
 		<PackageReference Include="System.Security.Cryptography.Pkcs" Version="8.0.1" />
 	</ItemGroup>

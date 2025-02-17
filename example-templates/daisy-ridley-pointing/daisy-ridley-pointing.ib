@@ -1,0 +1,46 @@
+<!-- CONFIG:
+{
+    "name": "Faceit - Daisy Ridley Pointing",
+    "description": "Daisy Ridley pointing with a white board for text",
+    "inputs": [
+        {
+            "name": "Text", 
+            "type": "text", 
+            "default": "Life Side Host",
+            "description": "What to tell the person being pointed at"
+        }
+    ]
+}
+-->
+
+<template width="900px" height="850px" animate animate-duration="1s" animate-fps="15">
+    <image width="100%" height="100%" x="0" y="0" src="./image.jpg" />
+    <text {text} font-family="font" color="black" rotate="-5" />
+</template>
+
+<cache>
+    <font-family name="font" src="https://fonts.cdnfonts.com/s/8764/Sertig.woff" />
+</cache>
+
+<script setup>
+import { Drawing, Context } from 'system';
+
+export default (ctx) => {
+    const { unit, bounds, point } = new Drawing(ctx);
+    const { get, pulsate } = new Context(ctx);
+
+    const topLeft = point('435px', '40px');
+    const bottomRight = point('875px', '400px');
+    return { 
+        text:  {
+            'font-size': pulsate('50px', '75px'),
+            'align-vertical': 'center',
+            'align-horizontal': 'center',
+            'align-text': 'center',
+            'origin-type': 'center',
+            value: get('Text') || 'Left Side Host',
+            ...bounds(topLeft, bottomRight),
+        }
+    };
+}
+</script>

@@ -1,0 +1,70 @@
+<!-- CONFIG:
+{
+    "name": "Marriage Proposal",
+    "description": "Create a marriage proposal",
+    "inputs": [
+        {
+            "name": "To", 
+            "type": "text", 
+            "default": "Your Mother",
+            "description": "The person you are proposing to"
+        },
+        {
+            "name": "From", 
+            "type": "text", 
+            "default": "Cardboard",
+            "description": "The person proposing"
+        },
+        {
+            "name": "Bubble Text", 
+            "type": "text", 
+            "default": "Please be the father of my bastard child",
+            "description": "The speech bubble text"
+        }
+    ]
+}
+-->
+
+<template width="1500px" height="1000px" animate animate-duration="1s" animate-fps="15" animate-repeat="1">
+    <image width="100%" height="100%" x="0" y="0" src="./image.png" />
+    <text {to} font-family="anime-ace" color="white" />
+    <text {from} font-family="anime-ace" color="white" />
+    <text {box} font-family="anime-ace" color="black" />
+</template>
+
+<cache>
+    <font-family name="anime-ace" src="https://fonts.cdnfonts.com/s/54590/animeace.woff" />
+</cache>
+
+<script setup>
+import { Drawing, Context } from 'system';
+export default (ctx) => {
+    const { unit, bounds } = new Drawing(ctx);
+    const { get, progress } = new Context(ctx);
+    const fontSize = unit('40px');
+    const common = {
+        'font-size': fontSize,
+        height: fontSize * 1.5,
+        width: unit('300px'),
+        'align-vertical': 'center',
+        'align-horizontal': 'left',
+        'align-text': 'start',
+        'origin-type': 'centerleft'
+    };
+    const box = {
+        ...common,
+        ...bounds('780px', '315px', '1030px', '700px'),
+        value: get('Bubble Text') ?? 'Please marry me!',
+        'align-text': 'center'
+    }
+    const to = {
+        ...common,
+        value: get('To') ?? 'You', x: unit('260px'), y: unit('645px') * progress,
+    };
+    const from = {
+        ...common,
+        value: get('From') ?? 'Me', x: unit('350px'), y: unit('775px') * progress,
+    };
+    return { to, from, box }
+}
+</script>
