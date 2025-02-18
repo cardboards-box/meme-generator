@@ -1,4 +1,5 @@
 using CardboardBox;
+using HighlightBlazor;
 using MemeGenerator.Services;
 using MemeGenerator.Web;
 using MemeGenerator.Web.Background;
@@ -14,7 +15,8 @@ builder.Services
     .AddCustomSwaggerGen()
     .AddServerServices()
     .AddTelemetry()
-    .AddResponseCaching();
+    .AddResponseCaching()
+    .AddHighlight();
 
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents()

@@ -1,18 +1,18 @@
 <!-- CONFIG:
 {
-    "name": "Faceit - Uno-Cards",
+    "name": "Uno-Cards",
     "description": "Bad condition or draw 25 cards",
     "inputs": [
         {
             "name": "Condition", 
             "type": "text", 
-            "default": "Left Side Host",
+            "default": "Stop being a pedophile",
             "description": "Bad Condition"
         },
         {
             "name": "Thoughts",
             "type": "text",
-            "default": "I should call an admin",
+            "default": "I should get a lawyer",
             "description": "Optional - Thoughts"
         }
     ]
@@ -36,7 +36,7 @@ export default (ctx) => {
     const { unit, bounds } = new Drawing(ctx);
     const { get, progressOne } = new Context(ctx);
 
-    const thoughtText = get('Thoughts') || 'I should call an admin...';
+    const thoughtText = get('Thoughts') || 'I should get a lawyer';
     const thoughts = progressOne('.', '..', '...', thoughtText, thoughtText);
 
     const common = {
@@ -50,7 +50,7 @@ export default (ctx) => {
     return { 
         condition:  {
             ...common,
-            value: get('Condition') || 'Left side host',
+            value: get('Condition') || 'Stop being a pedophile',
             ...bounds('107px', '139px', '230px', '251px'),
         },
         thoughts: {

@@ -23,6 +23,8 @@
 
     [Parameter] public string Class { get; set; } = "";
 
+    [Parameter] public string Style { get; set; } = "";
+
     public string Classes
     {
         get
@@ -49,7 +51,8 @@
 
             return string.Join("; ", dic
                 .Where(t => !string.IsNullOrWhiteSpace(t.Value))
-                .Select(t => $"{t.Key}: {t.Value}"));
+                .Select(t => $"{t.Key}: {t.Value}")
+                .Append(Style));
         }
     }
 }

@@ -59,9 +59,9 @@
                 </a>
             </div>
             <div class="card-footer">
-                Queued: @(Results.Data.TimeQueued.ToString("yyyy-MM-dd HH:mm")).
                 Started: @(Results.Data.TimeProcessStart?.ToString("yyyy-MM-dd HH:mm")).
                 Finished: @(Results.Data.TimeProcessFinished?.ToString("yyyy-MM-dd HH:mm")).
+                TTL: @(Results.Data.TimeToLive?.ToString("yyyy-MM-dd HH:mm")).
                 Size: @($"{Results.Data.Width}px / {Results.Data.Height}px")
             </div>
         </div>

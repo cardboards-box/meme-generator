@@ -9,6 +9,8 @@ public interface ITemplatesApiService
     Task<BoxedArray<MemeTemplate>?> Get();
 
     Task<Boxed<MemeTemplate>?> Fetch(Guid id);
+
+    Task<string?> Script(Guid id);
 }
 
 internal class TemplatesApiService(
@@ -22,5 +24,10 @@ internal class TemplatesApiService(
     public Task<BoxedArray<MemeTemplate>?> Get()
     {
         return _api.Get<BoxedArray<MemeTemplate>>("templates/all");
+    }
+
+    public Task<string?> Script(Guid id)
+    {
+        return _api.FileAsString($"/media/templates/{id}/script");
     }
 }

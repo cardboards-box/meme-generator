@@ -45,4 +45,14 @@ internal class TemplatesApiService(
         var result = Boxed.Ok(templates);
         return Task.FromResult(result)!;
     }
+
+    public async Task<string?> Script(Guid id)
+    {
+        var template = _templates.FindTemplate(id);
+        if (template is null ||
+            string.IsNullOrEmpty(template.FilePath) ||
+            !File.Exists(template.FilePath)) return null;
+
+        return await File.ReadAllTextAsync(template.FilePath);
+    }
 }

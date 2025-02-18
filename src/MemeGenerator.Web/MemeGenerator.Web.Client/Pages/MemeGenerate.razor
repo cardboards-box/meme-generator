@@ -2,6 +2,8 @@
 @rendermode InteractiveServer
 @inject IApi _api
 @inject NavigationManager _navi
+@inject ILogger<MemeGenerate> _logger
+@inject HighlightService _highlight
 
 <PageTitle>Meme Generator</PageTitle>
 
@@ -50,6 +52,26 @@
                     Generate
                 </button>
             </div>
+
+            @if (!string.IsNullOrEmpty(Script))
+            {
+                <div class="col-12">
+                    <div class="card mb-3">
+                        <div class="card-header d-flex">
+                            <button type="button" class="btn" @onclick="() => ShowScript = !ShowScript" style="line-height: 1">
+                                <Icon Unsize="true" Value="@(ShowScript ? "arrow_drop_up" : "arrow_drop_down")" Style="margin: auto" />
+                            </button>
+                            <span style="margin: auto 10px;">Meme Script</span>
+                        </div>
+                        @if(ShowScript)
+                        {
+                            <div class="card-body">
+                                <CodeHighlight CodeLanguage="html" Indent="false">@Script</CodeHighlight>
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
         </div>
     }
 </div>
@@ -61,6 +83,8 @@
     public string? Id { get; set; }
 
     public bool Loading { get; set; } = false;
+    public bool ShowScript { get; set; } = false;
+    public string? Script { get; set; }
 
     public Boxed<MemeTemplate>? Results { get; set; }
     public Boxed<MemeResult>? MemeResults { get; set; }
@@ -70,6 +94,19 @@
         ?? ((MemeResults?.Errors is not null && MemeResults.Errors.Length > 0) ? "An error occurred while generating meme" : null);
 
     public string[] Errors => Results?.Errors ?? MemeResults?.Errors ?? [];
+
+    public async Task LoadScript(Guid id)
+    {
+        try 
+        {
+            var script = await _api.Templates.Script(id) ?? string.Empty;
+            Script = System.Web.HttpUtility.HtmlEncode(script);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to load script for template {Id}", Id);
+        }
+    }
 
     public async Task Generate()
     {
@@ -93,6 +130,7 @@
         catch (Exception ex)
         {
             _error = ex.Message;
+            _logger.LogError(ex, "Failed to generate meme for template {Id}", Id);
         }
         finally
         {
@@ -112,10 +150,12 @@
         {
             Loading = true;
             Results = await _api.Templates.Fetch(guid);
+            await LoadScript(guid);
         }
         catch (Exception ex)
         {
             _error = ex.Message;
+            _logger.LogError(ex, "Failed to generate meme for template {Id}", Id);
         }
         finally
         {

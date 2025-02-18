@@ -1,12 +1,12 @@
 <!-- CONFIG:
 {
-    "name": "Faceit - Daisy Ridley Pointing",
+    "name": "Daisy Ridley Pointing",
     "description": "Daisy Ridley pointing with a white board for text",
     "inputs": [
         {
             "name": "Text", 
             "type": "text", 
-            "default": "Life Side Host",
+            "default": "Who's awesome?",
             "description": "What to tell the person being pointed at"
         }
     ]
@@ -38,7 +38,7 @@ export default (ctx) => {
             'align-horizontal': 'center',
             'align-text': 'center',
             'origin-type': 'center',
-            value: get('Text') || 'Left Side Host',
+            value: get('Text') || 'Who\'s awesome?',
             ...bounds(topLeft, bottomRight),
         }
     };

@@ -1,4 +1,4 @@
-﻿@page "/templates"
+﻿@page "/"
 @rendermode InteractiveServer
 @inject IApi _api
 
@@ -38,14 +38,14 @@ else
             @for(var i = 0; i < AllTemplates.Length; i++)
             {
                 var current = AllTemplates[i];
-                <div class="col-4 col-md-6 col-sm-12">
+                <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="card mb-3">
                         <div class="card-header">
-                            @current.Name (@current.Id)
+                            @current.Name
                         </div>
                         <div class="card-body">
                             <p>@current.Description</p>
-                            <img src="/api/media/templates/@current.Id" class="img-fluid" alt="@current.Name" />
+                            <img src="/api/media/templates/@current.Id" class="img-fluid" alt="@current.Name" style="max-height: 300px" />
                         </div>
                         <div class="card-footer">
                             <a class="btn btn-primary" href="/templates/@current.Id">Generate Meme</a>

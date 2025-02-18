@@ -1,18 +1,18 @@
 <!-- CONFIG:
 {
-    "name": "Faceit - Burning Paper",
+    "name": "Burning Paper",
     "description": "Ignorance is bliss",
     "inputs": [
         {
             "name": "Paper Text", 
             "type": "text", 
-            "default": "Your Side Hosts",
+            "default": "Go to bed on time. Love you - Mum",
             "description": "What to burn"
         },
         {
             "name": "Ignoranus",
             "type": "text",
-            "default": "Left Side Captain",
+            "default": "Little Timmy up at 3AM",
             "description": "The person being ignorant"
         }
     ]
@@ -53,7 +53,7 @@ export default (ctx) => {
     ];
 
     const ignoranuses = [];
-    const text = get('Ignoranus') || 'Maisey';
+    const text = get('Ignoranus') || 'Little Timmy up at 3AM';
     for(const bounds of boundings) {
         ignoranuses.push({
             ...common,
@@ -65,7 +65,7 @@ export default (ctx) => {
     return { 
         paper:  {
             ...common,
-            value: get('Paper Text') || 'The report about isekai spreadsheet that cardboard wants',
+            value: get('Paper Text') || 'Go to bed on time. Love you - Mum',
             ...bounds('45px', '60px', '220px', '290px'),
         },
         ignoranuses 
