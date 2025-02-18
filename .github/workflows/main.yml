@@ -3,7 +3,7 @@ name: meme-generator-web
 on:
   push:
     branches:
-      - main
+      - release/*
     tags:
       - v*
   pull_request:

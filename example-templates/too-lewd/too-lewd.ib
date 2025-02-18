@@ -1,0 +1,72 @@
+<!-- CONFIG:
+{
+    "name": "Too Lewd",
+    "description": "Dude that's lewd",
+    "inputs": [
+        {
+            "name": "Bubble Text", 
+            "type": "text", 
+            "default": "Dude that's lewd",
+            "description": "What to bubble"
+        },
+        {
+            "name": "Sfx",
+            "type": "text",
+            "default": "Ba-dump",
+            "description": "Are you feeling it yet?"
+        }
+    ]
+}
+-->
+
+<template width="640px" height="640px">
+    <image width="100%" height="100%" x="0" y="0" src="./image.jpg" />
+    <text {bubble} font-family="font" color="black" auto-font-size auto-font-size-padding="30" />
+    <foreach let="sfx" :each="sfxs">
+        <text {sfx} font-family="font" auto-font-size color="black" auto-font-size-padding="10" />
+    </foreach>
+</template>
+
+<cache>
+    <font-family name="font" src="https://fonts.cdnfonts.com/s/54590/animeace.woff" />
+</cache>
+
+<script setup>
+import { Drawing, Context, logger } from 'system';
+
+export default (ctx) => {
+    const { unit, bounds } = new Drawing(ctx);
+    const { get } = new Context(ctx);
+
+    const common = {
+        'align-vertical': 'center',
+        'align-horizontal': 'center',
+        'align-text': 'center',
+        'origin-type': 'center',
+    }
+
+    const boundings = [
+        { ...bounds('600px', '340px', '705px', '405px'), rotate: 95, 'origin-type': 'bottomleft' },
+        { ...bounds('545px', '500px', '650px', '565px'), rotate: 110, 'origin-type': 'bottomleft' },
+    ];
+
+    const sfxs = [];
+    const text = get('Sfx') || 'Ba-dum';
+    for(const bounds of boundings) {
+        sfxs.push({
+            ...common,
+            value: text,
+            ...bounds
+        });
+    }
+
+    return { 
+        bubble:  {
+            ...common,
+            value: get('Bubble Text') || 'Dude that\'s lewd',
+            ...bounds('380px', '0px', '640px', '255px'),
+        },
+        sfxs 
+    };
+}
+</script>

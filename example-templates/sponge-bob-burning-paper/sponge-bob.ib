@@ -21,14 +21,14 @@
 
 <template width="560px" height="680px">
     <image width="100%" height="100%" x="0" y="0" src="./image.jpg" />
-    <text {paper} font-family="font" color="black" />
+    <text {paper} font-family="font" color="black" auto-font-size auto-font-size-padding="10" />
     <foreach let="ignoranus" :each="ignoranuses">
-        <text {ignoranus} font-family="font" auto-font-size color="black" />
+        <text {ignoranus} font-family="font" auto-font-size color="black" auto-font-size-padding="10" />
     </foreach>
 </template>
 
 <cache>
-    <font-family name="font" src="https://fonts.cdnfonts.com/s/21809/ScribblerBd.woff" />
+    <font-family name="font" src="https://fonts.cdnfonts.com/s/24008/Ticker Tape.woff" />
 </cache>
 
 <script setup>
@@ -47,13 +47,13 @@ export default (ctx) => {
     }
 
     const boundings = [
-        bounds('300px', '5px', '550px', '65px'),
-        bounds('80px', '360px', '270px', '410px'),
-        bounds('385px', '355px', '555px', '425px')
+        { ...bounds('300px', '5px', '550px', '65px'), rotate: 1 },
+        { ...bounds('80px', '360px', '270px', '410px'), rotate: 5 },
+        { ...bounds('385px', '355px', '555px', '425px'), rotate: 0 },
     ];
 
     const ignoranuses = [];
-    const text = get('Ignoranus') || 'Left Side Captain';
+    const text = get('Ignoranus') || 'Maisey';
     for(const bounds of boundings) {
         ignoranuses.push({
             ...common,
@@ -65,7 +65,7 @@ export default (ctx) => {
     return { 
         paper:  {
             ...common,
-            value: get('Paper Text') || 'Your Side Hosts',
+            value: get('Paper Text') || 'The report about isekai spreadsheet that cardboard wants',
             ...bounds('45px', '60px', '220px', '290px'),
         },
         ignoranuses 
