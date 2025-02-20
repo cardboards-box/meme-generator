@@ -28,6 +28,6 @@ internal class TemplatesApiService(
 
     public Task<string?> Script(Guid id)
     {
-        return _api.FileAsString($"/media/templates/{id}/script");
+        return _api.FileAsString($"/api/media/templates/{id}/script");
     }
 }

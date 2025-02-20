@@ -1,0 +1,102 @@
+<!-- CONFIG:
+{
+    "name": "Death March Confession",
+    "description": "Love letter? Nah, it's just an update",
+    "inputs": [
+        {
+            "name": "Confessor", 
+            "type": "text", 
+            "default": "Zena",
+            "description": "The person being confessed to"
+        },
+        {
+            "name": "Innocent Bystander",
+            "type": "text",
+            "default": "Lilio",
+            "description": "The person about to drop a truth bomb"
+        },
+        {
+            "name": "Zena Text",
+            "type": "text",
+            "default": "Lilio! Lilio! Look a letter from Satou!",
+            "description": "The first text shown"
+        },
+        {
+            "name": "Journey Update",
+            "type": "text",
+            "default": "I have a harem of little slave girls - We cannot be together",
+            "description": "The text to show above the letter"
+        },
+        {
+            "name": "Realitity Check",
+            "type": "text",
+            "default": "Isn't he just a depraved lolicon?",
+            "description": "Just a reminder"
+        }
+    ]
+}
+-->
+
+<template width="1000px" height="600px" animate animate-duration="5s" animate-fps="15">
+    <image width="100%" height="100%" x="0" y="0" src="./image.png" />
+    <text font-family="font" color="white" auto-font-size :value="confessor" x="680px" y="15px" width="250px" height="50px" />
+    <text font-family="font" color="white" auto-font-size :value="bystander" x="75px" y="35px" width="250px" height="50px" />
+
+    <if :condition="progress < 0.66">
+        <text 
+            font-family="font" 
+            color="white" 
+            x="440px" y="30px" width="275px" height="170px" 
+            auto-font-size 
+            auto-font-size-padding="10px" 
+            :value="prompt" 
+        />
+    </if>
+    <if :condition="progress >= 0.66">
+        <text 
+            font-family="font" 
+            color="white" 
+            x="275px" y="30px" width="275px" height="170px" 
+            auto-font-size 
+            auto-font-size-padding="10px" 
+            :value="realityCheck" 
+        />
+    </if>
+    <if :condition="progress >= 0.33">
+        <rectangle x="400px" y="350px" width="175px" height="220px" color="white">
+            <text 
+                font-family="font" 
+                auto-font-size 
+                auto-font-size-padding="10px" 
+                color="black" 
+                :value="update"
+            />
+        </rectangle>
+        <line border-color="white" border-width="3px">
+            <point x="487px" y="350px" />
+            <point x="500px" y="265px" />
+        </line>
+    </if>
+</template>
+
+<cache>
+    <font-family name="font" src="https://fonts.cdnfonts.com/s/8764/Sertig.woff" />
+</cache>
+
+<script setup>
+import { Drawing, Context } from 'system';
+
+export default (ctx) => {
+    const { unit, bounds, point } = new Drawing(ctx);
+    const { get, progress, progressOne } = new Context(ctx);
+
+    return {
+        confessor: get('Confessor') || 'Zena',
+        bystander: get('Innocent Bystander') || 'Lilio',
+        prompt: get('Zena Text') || 'Lilio! Lilio! Look a letter from Satou!',
+        update: get('Journey Update') || 'I have a harem of little slave girls - We cannot be together',
+        realityCheck: get('Reality Check') || 'Isn\'t he just a depraved lolicon?',
+        progress,
+    }
+}
+</script>
