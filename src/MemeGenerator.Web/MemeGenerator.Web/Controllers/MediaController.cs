@@ -1,9 +1,10 @@
 ﻿using CardboardBox.Extensions.AspNetCore;
 using ImageBox;
-using MemeGenerator.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MemeGenerator.Web.Controllers;
+
+using Services;
 
 public class MediaController(
     ITemplateWatchService _templates,

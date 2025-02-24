@@ -1,0 +1,104 @@
+<!-- CONFIG:
+{
+    "name": "Magic Circle",
+    "description": "Generate a fancy magic circle",
+    "inputs": [
+        {
+            "name": "Line1", 
+            "type": "text", 
+            "default": "Flames of Purgatory, rise and consume, Enemies before me, meet your doom.",
+            "description": "The first line of the spell"
+        },
+        {
+            "name": "Line2",
+            "type": "text",
+            "default": "Infernal blaze, heed my call, Reduce to ashes, one and all.",
+            "description": "The second line of the spell"
+        },
+        {
+            "name": "Line3",
+            "type": "text",
+            "default": "Blazing inferno, reach the skies, Scorch the heavens, where fire lies.",
+            "description": "The third line of the spell"
+        },
+        {
+            "name": "Line4",
+            "type": "text",
+            "default": "Ember storm, ascend and blaze, Turn the firmament to fiery haze.",
+            "description": "The forth line of the spell"
+        },
+        {
+            "name": "Color",
+            "type": "text",
+            "default": "white",
+            "description": "The color of the circle"
+        }
+    ]
+}
+-->
+
+<template width="500px" height="500px" animate animate-duration="5s" animate-fps="15">
+    <clear color="transparent" />
+    <foreach let="item" :each="output" index="i">
+        <circle {item.circle} :border-color="color" border-width="1px" />
+        <text 
+            :color="color" font-size="24px" font-family="font" 
+            align-vertical="bottom" align-horizontal="left" align-text="center"
+            origin-x="50vw" origin-y="50vh"
+            draw-along-path {item.text}
+            :rotate="((progress * 360) + (i * 180)) * (i % 2 == 0 ? 1 : -1)"
+        >
+            <circle />
+        </text>
+    </foreach>
+</template>
+
+<cache>
+    <font-family name="font" src="https://fonts.cdnfonts.com/s/24965/KGTrueColors.woff" />
+</cache>
+
+<script setup>
+import { Drawing, Context } from 'system';
+
+export default (ctx) => {
+    const { unit, bounds, point } = new Drawing(ctx);
+    const { get, progress, progressOne } = new Context(ctx);
+
+    const margin = unit('30px');
+
+    const widthBind = (value) => {
+        const point = unit(value);
+        const width = unit('100vw') - (point * 2);
+        return { x: point, y: point, width: width, height: width }
+    }
+
+    const lines = [
+        get('Line1') || 'Flames of Purgatory, rise and consume, Enemies before me, meet your doom.',
+        get('Line2') || 'Infernal blaze, heed my call, Reduce to ashes, one and all.',
+        get('Line3') || 'Blazing inferno, reach the skies, Scorch the heavens, where fire lies.',
+        get('Line4') || 'Ember storm, ascend and blaze, Turn the firmament to fiery haze.'
+    ]
+
+    const output = [];
+    for (let i = 0; i < lines.length; i++) {
+        const line = lines[i];
+        if (!line) continue;
+
+        const offset = output.length + 1;
+        const bounds = widthBind(offset * margin);
+        output.push({
+            text: {
+                value: line,
+                ...bounds
+            },
+            circle: bounds
+        });
+    }
+
+    return {
+        color: get('Color') || 'white',
+        output,
+        progress,
+    }
+}
+</script>

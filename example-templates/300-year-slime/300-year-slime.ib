@@ -1,0 +1,116 @@
+<!-- CONFIG:
+{
+    "name": "300 Year Slime",
+    "description": "Thrown in jail for diddling kids",
+    "inputs": [
+        {
+            "name": "Falfa1", 
+            "type": "text", 
+            "default": "Is that even legal? Aren't we children?",
+            "description": "The first line Falfa says"
+        },
+        {
+            "name": "Shalsha1",
+            "type": "text",
+            "default": "Let me consult the law real quick",
+            "description": "The first line Shalsha says"
+        },
+        {
+            "name": "Falfa2",
+            "type": "text",
+            "default": "He's being tackled by the cops now.",
+            "description": "The second thing Falfa says"
+        },
+        {
+            "name": "Shalsha2",
+            "type": "text",
+            "default": "Yep. It's illegal. He's going to jail",
+            "description": "The second thing Shalsha says"
+        },
+        {
+            "name": "Guilty Person",
+            "type": "text",
+            "default": "Lan G",
+            "description": "Who was thrown in jail"
+        }
+    ]
+}
+-->
+
+<template width="1000px" height="560px" animate animate-duration="10s" animate-fps="5">
+    <switch :value="frame">
+        <case when="1">
+            <image src="./image-1.png" x="0" y="0" width="100%" height="100%" />
+            <text 
+                x="15px" y="15px" width="215px" height="215px" 
+                auto-font-size auto-font-size-padding="10px"
+                color="white" font-family="font"
+                :value="falfa1"
+            />
+        </case>
+        <case when="2">
+            <image src="./image-2.png" x="0" y="0" width="100%" height="100%" />
+            <text 
+                x="675px" y="45px" width="325px" height="255px" 
+                auto-font-size auto-font-size-padding="10px"
+                color="white" font-family="font"
+                :value="shalsha1"
+            />
+        </case>
+        <case when="3">
+            <image src="./image-3.png" x="0" y="0" width="100%" height="100%" />
+            <text 
+                x="15px" y="15px" width="215px" height="215px" 
+                auto-font-size auto-font-size-padding="10px"
+                color="white" font-family="font"
+                :value="falfa2"
+            />
+        </case>
+        <case when="4">
+            <image src="./image-3.png" x="0" y="0" width="100%" height="100%" />
+            <text 
+                x="15px" y="15px" width="215px" height="215px" 
+                auto-font-size auto-font-size-padding="10px"
+                color="white" font-family="font"
+                :value="falfa2"
+            />
+            <text 
+                x="675px" y="45px" width="325px" height="255px" 
+                auto-font-size auto-font-size-padding="10px"
+                color="white" font-family="font"
+                :value="shalsha2"
+            />
+        </case>
+        <case when="5">
+            <image src="./image-4.png" x="0" y="0" width="100%" height="100%" />
+            <text 
+                x="300px" y="20px" width="400px" height="80px" 
+                auto-font-size auto-font-size-padding="10px"
+                color="white" font-family="font"
+                :value="guiltyPerson"
+            />
+        </case>
+    </switch>
+</template>
+
+<cache>
+    <font-family name="font" src="https://fonts.cdnfonts.com/s/8764/Sertig.woff" />
+</cache>
+
+<script setup>
+import { Drawing, Context } from 'system';
+
+export default (ctx) => {
+    const { unit, bounds, point } = new Drawing(ctx);
+    const { get, progress, progressOne } = new Context(ctx);
+    const frame = progressOne(1, 2, 3, 4, 5);
+    return {
+        shalsha1: get('Shalsha1') || 'Let me consult the law real quick', 
+        falfa1: get('Falfa1') || 'Is that even legal? Aren\'t we children?', 
+        shalsha2: get('Shalsha2') || 'Yep. It\'s illegal. He\'s going to jail', 
+        falfa2: get('Falfa2') || 'He\'s being tackled by the cops now.', 
+        guiltyPerson: get('Guilty Person') || 'Lan G' ,
+        frame,
+    }
+}
+</script>

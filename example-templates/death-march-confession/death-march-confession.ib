@@ -28,7 +28,7 @@
             "description": "The text to show above the letter"
         },
         {
-            "name": "Realitity Check",
+            "name": "Reality Check",
             "type": "text",
             "default": "Isn't he just a depraved lolicon?",
             "description": "Just a reminder"
